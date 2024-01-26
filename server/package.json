@@ -2,12 +2,13 @@
     "name": "cheap-server",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "mini-server.js",
+    "type": "module",
     "scripts": {
-        "dev": "nodemon ./src/server.js",
-        "demonize": "pm2 start ./src/server.js --name cheap_server",       
-        "stop-demon": "pm2 stop cheap_server",        
-        "restart-demon": "pm2 restart ./src/server.js --name cheap_server"
+        "dev": "nodemon ./src/mini-server.js",
+        "demonize": "pm2 start ./src/mini-server.js --name cheap_mini-server",       
+        "stop-demon": "pm2 stop cheap_mini-server",        
+        "restart-demon": "pm2 restart ./src/mini-server.js --name cheap_mini-server"
     },
     "keywords": [],
     "author": "",

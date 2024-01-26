@@ -39,6 +39,7 @@ class Session {
         }
     }
     send(userId, data) {
+        console.log("sending", data);
         this.clients[userId].send(JSON.stringify(data));
     }
     rpc_set(data) {
