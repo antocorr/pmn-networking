@@ -24,6 +24,7 @@ public class NetworkManager : MonoBehaviour
     public Dictionary<string, Dictionary<string, object>> networkObjectProperties = new Dictionary<string, Dictionary<string, object>>();
     public string sessionId = "";
     public string userId = "";
+    public string userName = "";
     public bool connected = false;
     public async void StartConnection()
     {
@@ -213,6 +214,7 @@ public class NetworkManager : MonoBehaviour
         message["type"] = "connect";
         message["sessionId"] = sessionId;
         message["userId"] = userId;
+        message["userName"] = userName;
         var json = JsonConvert.SerializeObject(message);
         Debug.Log("sendind...");
         Debug.Log(json);

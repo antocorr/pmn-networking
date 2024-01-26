@@ -7,6 +7,7 @@ public class ConnectButton : MonoBehaviour
 {
     public NetworkManager networkManager;
     public GameObject textInputField;
+    public GameObject userNameInputField;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class ConnectButton : MonoBehaviour
     public void OnClick(){
         string sessionId = textInputField.GetComponent<TMP_Text>().text;
         networkManager.sessionId = sessionId;
+        networkManager.userName = userNameInputField.GetComponent<TMP_Text>().text;
         networkManager.StartConnection();
     }
 
