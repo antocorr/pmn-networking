@@ -24,9 +24,8 @@ public class NetworkManager : MonoBehaviour
     public Dictionary<string, Dictionary<string, object>> networkObjectProperties = new Dictionary<string, Dictionary<string, object>>();
     public string sessionId = "";
     public string userId = "";
-    //array to store function names to be called after some time and the time
-    // Start is called before the first frame update
-    async void Start()
+    public bool connected = false;
+    public async void StartConnection()
     {
         websocket = new WebSocket("ws://ggj.playumi.com");
         if (sessionId.Length == 0)
@@ -74,7 +73,7 @@ public class NetworkManager : MonoBehaviour
         };
 
         // waiting for messages
-        await websocket.Connect();        
+        await websocket.Connect();   
     }
     void EvaluateMessage(string msg){
         Debug.Log(msg);
@@ -91,6 +90,7 @@ public class NetworkManager : MonoBehaviour
         }
     }
     void Connected(NetworkMessage data){
+        Debug.Log("Connected");
         var sceneState = data.sceneState;
         /**
             {
@@ -104,8 +104,16 @@ public class NetworkManager : MonoBehaviour
         //loop through networkObjects
         foreach (GameObject obj in networkObjects)
         {
+            Debug.Log("looping through network objects");
             //get the networkId
-            string networkId = obj.GetComponent<NetworkObject>().networkId;
+            NetworkObject no = obj.GetComponent<NetworkObject>();
+            string networkId = no.networkId;
+            Debug.Log(no.networkManager);
+            if(!no.networkManager){
+                Debug.Log("setting network manager");
+                no.networkManager = this;
+            }
+            addNetworkObject(obj, networkId);
             //check if the networkId is in the sceneState
             if (sceneState.ContainsKey(networkId))
             {
@@ -125,6 +133,9 @@ public class NetworkManager : MonoBehaviour
     }
     void Update()
     {
+        if(!connected){
+            return;
+        }
         #if !UNITY_WEBGL || UNITY_EDITOR
         websocket.DispatchMessageQueue();
         #endif
@@ -203,7 +214,9 @@ public class NetworkManager : MonoBehaviour
         message["sessionId"] = sessionId;
         message["userId"] = userId;
         var json = JsonConvert.SerializeObject(message);
+        Debug.Log("sendind...");
         Debug.Log(json);
+        connected = true;
         await websocket.SendText(json);
     }
     async void Rpc(string objectId, string method, string[] args)

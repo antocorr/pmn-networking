@@ -9,12 +9,15 @@ public class NetworkObject : MonoBehaviour
     public NetworkManager networkManager;
     public void Start()
     {        
-        networkManager.addNetworkObject(this.gameObject, networkId);
+        //networkManager.addNetworkObject(this.gameObject, networkId);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void RpcSet(string component, string propertyName, object value){
+        networkManager.RpcSet(networkId, component, propertyName, value);
     }
 }

@@ -16,6 +16,10 @@ public class NetworkPlayer : NetworkObject
     // Update is called once per frame
     void Update()
     {
+        if(!networkManager || !networkManager.connected)
+        {
+            return;
+        }
         //check for keyboard wasd while pressed        
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {            
